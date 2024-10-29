@@ -38,11 +38,11 @@ impl UtilityContract {
         // env.storage().persistent().get(&ADMIN, &admin)
     }
 
-    pub fn init_token(env: Env, addr: Address) {
-        TokenUtils::new(&env)
-            .events()
-            .mint(addr.clone(), addr, 2 as i128);
-    }
+    // pub fn init_token(env: Env, addr: Address) {
+    //     TokenUtils::new(&env)
+    //         .events()
+    //         .mint(addr.clone(), addr, 2 as i128);
+    // }
 
     pub fn get_config(env: Env) -> String {
         let addr = env.storage().persistent().get::<Symbol, String>(&ADMIN);
@@ -62,61 +62,71 @@ impl UtilityContract {
         let mut u = u;
         u.provider = sender.clone();
 
-        if u.selection == Selection::Raffle {
-            if u.raffle.start_time < env.ledger().timestamp()
-                || u.raffle.start_time > u.offer_expiry
-            {
-                panic_with_error!(env, UtilityError::InvalidTime);
-            }
-        }
-
-        if u.reward.receipt == Receipt::External {
-            for addr in u.reward.token_addresses.clone() {
-                let token_client = token::TokenClient::new(&env, &addr);
-                u.provider.require_auth();
-                if token_client.balance(&u.provider) < 1 {
-                    panic_with_error!(&env, UtilityError::InsufficientBalance);
-                }
-                token_client.transfer_from(
-                    &u.provider,
-                    &sender,
-                    &env.current_contract_address(),
-                    &(1 as i128),
-                );
-            }
-        }
-
-        if u.offer_expiry < env.ledger().timestamp() {
-            panic_with_error!(&env, UtilityError::InvalidExpiry);
-        }
-        if u.usage_type == UsageType::Limited && u.usage < 1 {
-            panic_with_error!(&env, UtilityError::InvalidExpiry);
-        }
-
-        // fetch nft collections
-
-        if (u.expiry_type == ExpiryType::TimeBased || u.expiry_type == ExpiryType::DateBased)
-            && u.expiry < env.ledger().timestamp()
-        {
-            panic_with_error!(&env, UtilityError::InvalidExpiry);
-        }
-
-        // if env.storage().persistent().has(&U_STORAGE) {
-        let mut utilities = env
-            .storage()
-            .persistent()
-            .get::<Symbol, Vec<Utility>>(&U_STORAGE)
-            .unwrap_or(Vec::new(&env));
-
-        utilities.push_back(u);
-        // } else {
-        //     let mut utilities: Vec<Utility> = Vec::new(&env);
-        //     utilities.push_back(u);
-        //     env.storage().persistent().set(&U_STORAGE, &utilities);
+        // if u.selection == Selection::Raffle {
+        //     if u.raffle.start_time < env.ledger().timestamp()
+        //         || u.raffle.start_time > u.offer_expiry
+        //     {
+        //         panic_with_error!(env, UtilityError::InvalidTime);
+        //     }
         // }
+
+        // if u.reward.receipt == Receipt::External {
+        //     for addr in u.reward.token_addresses.clone() {
+        //         let token_client = token::TokenClient::new(&env, &addr);
+        //         u.provider.require_auth();
+        //         if token_client.balance(&u.provider) < 1 {
+        //             panic_with_error!(&env, UtilityError::InsufficientBalance);
+        //         }
+        //         token_client.transfer_from(
+        //             &u.provider,
+        //             &sender,
+        //             &env.current_contract_address(),
+        //             &(1 as i128),
+        //         );
+        //     }
+        // }
+
+        // if u.offer_expiry < env.ledger().timestamp() {
+        //     panic_with_error!(&env, UtilityError::InvalidExpiry);
+        // }
+        // if u.usage_type == UsageType::Limited && u.usage < 1 {
+        //     panic_with_error!(&env, UtilityError::InvalidExpiry);
+        // }
+
+        // // fetch nft collections
+
+        // if (u.expiry_type == ExpiryType::TimeBased || u.expiry_type == ExpiryType::DateBased)
+        //     && u.expiry < env.ledger().timestamp()
+        // {
+        //     panic_with_error!(&env, UtilityError::InvalidExpiry);
+        // }
+
+        if env.storage().persistent().has(&U_STORAGE) {
+            let mut utilities = env
+                .storage()
+                .persistent()
+                .get::<Symbol, Vec<Utility>>(&U_STORAGE)
+                .unwrap_or(Vec::new(&env));
+
+            utilities.push_back(u);
+
+            env.storage().persistent().set(&U_STORAGE, &utilities);
+        } else {
+            let mut utilities: Vec<Utility> = Vec::new(&env);
+            utilities.push_back(u);
+            env.storage().persistent().set(&U_STORAGE, &utilities);
+        }
     }
 
     pub fn join_raffle(env: Env, utility_id: u64, sender: Address, user: Address) {
+        if env
+            .storage()
+            .persistent()
+            .get::<Symbol, Vec<Utility>>(&U_STORAGE)
+            .is_none()
+        {
+            panic_with_error!(&env, UtilityError::UtilityNotFound);
+        }
         let utility = env
             .storage()
             .persistent()
@@ -141,6 +151,14 @@ impl UtilityContract {
     }
 
     pub fn end_raffle(env: Env, utility_id: u64, sender: Address) {
+        if env
+            .storage()
+            .persistent()
+            .get::<Symbol, Vec<Utility>>(&U_STORAGE)
+            .is_none()
+        {
+            panic_with_error!(&env, UtilityError::UtilityNotFound);
+        }
         let utility = env
             .storage()
             .persistent()
