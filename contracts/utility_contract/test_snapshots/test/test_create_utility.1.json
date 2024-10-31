@@ -475,7 +475,7 @@
               }
             ],
             "data": {
-              "u64": 0
+              "u64": 1
             }
           }
         }
@@ -491,161 +491,137 @@
           "v0": {
             "topics": [
               {
-                "symbol": "fn_return"
+                "symbol": "error"
               },
               {
-                "symbol": "get_utility"
+                "error": {
+                  "contract": 12
+                }
               }
             ],
             "data": {
-              "map": [
+              "vec": [
                 {
-                  "key": {
-                    "symbol": "expiry"
-                  },
-                  "val": {
-                    "u64": 1000
-                  }
+                  "string": "failing with contract error"
                 },
                 {
-                  "key": {
-                    "symbol": "expiry_type"
-                  },
-                  "val": {
-                    "u32": 1
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "offer_expiry"
-                  },
-                  "val": {
-                    "u64": 2000
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "partner"
-                  },
-                  "val": {
-                    "address": "GAIIG7PGQYFG4AZK36YWKE3GPH6GXU4BIDZZASMP5DSVZL2DZ75W34JS"
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "provider"
-                  },
-                  "val": {
-                    "address": "GAIIG7PGQYFG4AZK36YWKE3GPH6GXU4BIDZZASMP5DSVZL2DZ75W34JS"
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "raffle"
-                  },
-                  "val": {
-                    "map": [
-                      {
-                        "key": {
-                          "symbol": "ended"
-                        },
-                        "val": {
-                          "bool": false
-                        }
-                      },
-                      {
-                        "key": {
-                          "symbol": "start_time"
-                        },
-                        "val": {
-                          "u64": 500
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "reward"
-                  },
-                  "val": {
-                    "map": [
-                      {
-                        "key": {
-                          "symbol": "amount_per_win"
-                        },
-                        "val": {
-                          "u64": 100
-                        }
-                      },
-                      {
-                        "key": {
-                          "symbol": "no_of_winners"
-                        },
-                        "val": {
-                          "u64": 10
-                        }
-                      },
-                      {
-                        "key": {
-                          "symbol": "receipt"
-                        },
-                        "val": {
-                          "u32": 0
-                        }
-                      },
-                      {
-                        "key": {
-                          "symbol": "token_addresses"
-                        },
-                        "val": {
-                          "vec": []
-                        }
-                      },
-                      {
-                        "key": {
-                          "symbol": "total_amount"
-                        },
-                        "val": {
-                          "u64": 1000
-                        }
-                      }
-                    ]
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "selection"
-                  },
-                  "val": {
-                    "u32": 0
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "usage"
-                  },
-                  "val": {
-                    "u64": 10
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "usage_type"
-                  },
-                  "val": {
-                    "u32": 1
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "utility_uri"
-                  },
-                  "val": {
-                    "string": "https://example.com"
-                  }
+                  "u32": 12
                 }
               ]
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "error"
+              },
+              {
+                "error": {
+                  "contract": 12
+                }
+              }
+            ],
+            "data": {
+              "string": "escalating error to panic"
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "error"
+              },
+              {
+                "error": {
+                  "contract": 12
+                }
+              }
+            ],
+            "data": {
+              "string": "caught error from function"
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "error"
+              },
+              {
+                "error": {
+                  "contract": 12
+                }
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "contract call failed"
+                },
+                {
+                  "symbol": "get_utility"
+                },
+                {
+                  "vec": [
+                    {
+                      "u64": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "error"
+              },
+              {
+                "error": {
+                  "contract": 12
+                }
+              }
+            ],
+            "data": {
+              "string": "escalating error to panic"
             }
           }
         }

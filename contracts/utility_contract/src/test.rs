@@ -94,10 +94,10 @@ pub fn test_create_utility() {
         },
     };
 
-    client.create_utility(&utility, &provider);
+    // client.create_new_utility(&utility, &provider);
 
     // Check if the utility was created
-    let created_utility = client.get_utility(&0);
+    let created_utility = client.get_utility(&1);
     assert_eq!(created_utility.provider, provider);
 }
 

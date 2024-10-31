@@ -53,6 +53,7 @@ pub enum Receipt {
 }
 
 #[contracttype]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Utility {
     pub provider: Address,
     pub expiry: u64,
@@ -68,6 +69,7 @@ pub struct Utility {
 }
 
 #[contracttype]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Reward {
     pub receipt: Receipt,
     pub token_addresses: Vec<Address>,
@@ -77,6 +79,7 @@ pub struct Reward {
 }
 
 #[contracttype]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Raffle {
     pub start_time: u64,
     pub ended: bool,
